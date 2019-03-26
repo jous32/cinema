@@ -15,5 +15,6 @@ export default combineReducers({
     customerName,
     customerEmail,
     customerNationalId,
-    customerCreateEditVisible
+    customerCreateEditVisible,
+    bookings
 });

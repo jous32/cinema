@@ -34,7 +34,7 @@ const App = () => (
         </nav>
          <main role="main" className="col-md-10">
 
-             <h2>Peliculas</h2>
+              <h2>Peliculas</h2>
                <Form/>
                <FormBooking/>
                <ItemListMovies />

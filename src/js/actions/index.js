@@ -1,6 +1,9 @@
-import { ADD_CINEMA, FETCH_CINEMAS } from "../constants/action-types";
-export const addMovie = cinema => ({ type: ADD_CINEMA, payload: cinema });
-export const fetchMovies = cinemas => ({ type: FETCH_CINEMAS, payload: cinemas});
+export function changeDate(date) {
+    return {
+        type: 'CHANGE_DATE',
+        changeDate: date
+    };
+}
 
 export function changeCustomerName(name) {
     return {
@@ -32,12 +35,15 @@ export function changeCustomerCreateEditVisible(value) {
 
 export function submitBooking() {
     return (dispatch, getState) => {
+      console.log('------- a---asd a-sd-as--d ');
+      console.log(getState());
+      var date = new Date(getState().changeDate).toISOString().substr(0,10)
       var bookingInfo = {
         "name": getState().customerName,
         "email" : getState().customerEmail,
         "national_id": getState().customerNationalId,
         "movieId" : getState().movieId,
-        "date" : '2019-01-01'
+        "date" : date
       }
       dispatch(createPerson(bookingInfo));
 
@@ -125,7 +131,7 @@ function createBooking(movieFunction,personId,movieId){
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
       },
-      method: 'GET',
+      method: 'POST',
       body: JSON.stringify(payload)
   })
       .then((response) => {
@@ -147,6 +153,8 @@ function createBooking(movieFunction,personId,movieId){
           dispatch(changeId(''));
           dispatch(itemsHasErrored(true))
         })
+        dispatch(changeCustomerCreateEditVisible(false));
+        dispatch(changeId(''));
   };
 
 

@@ -29,9 +29,12 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
+    "css-loader": "^2.1.1",
     "react-bootstrap4-modal": "^1.7.0",
+    "react-calendar": "^2.18.1",
     "react-dropdown": "^1.4.0",
     "redux-thunk": "^2.1.0",
+    "style-loader": "^0.23.1",
     "whatwg-fetch": "^2.0.3"
   }
 }

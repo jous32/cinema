@@ -45,7 +45,7 @@ class BookingLists extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        items: state.items,
+        bookings: state.bookings,
         hasErrored: state.itemsHasErrored,
         isLoading: state.itemsIsLoading,
     };

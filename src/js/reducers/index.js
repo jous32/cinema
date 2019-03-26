@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { items, itemsHasErrored, itemsIsLoading,createEditVisible } from './items';
-import { movieName,movieId,movieDescription,movieImageUrl } from './cinemas';
+import { movieName,movieId,movieDescription,movieImageUrl,changeDate } from './cinemas';
+import { bookings } from './bookings';
 import { customerName,customerEmail,customerNationalId,customerCreateEditVisible } from './customer';
 
 export default combineReducers({
@@ -16,5 +17,6 @@ export default combineReducers({
     customerEmail,
     customerNationalId,
     customerCreateEditVisible,
-    bookings
+    bookings,
+    changeDate
 });

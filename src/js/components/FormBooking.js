@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Modal from 'react-bootstrap4-modal';
+import Calendar from 'react-calendar'
 import { connect } from "react-redux";
-import { changeCustomerName,changeCustomerEmail,changeCustomerNationalId,submitBooking,customerCancelModal } from '../actions/index';
+import { changeCustomerName,changeCustomerEmail,changeCustomerNationalId,submitBooking,customerCancelModal,changeDate } from '../actions/index';
 
 class FormBookingComponent extends Component {
   constructor() {
@@ -12,6 +13,7 @@ class FormBookingComponent extends Component {
     this.handleChangeCustomerNationalId = this.handleChangeCustomerNationalId.bind(this);
     this.handleSubmitBooking = this.handleSubmitBooking.bind(this);
     this.handleCustomerCancelModal = this.handleCustomerCancelModal.bind(this);
+    this.handleChangeDate = this.handleChangeDate.bind(this);
   }
 
 
@@ -29,6 +31,11 @@ class FormBookingComponent extends Component {
   }
   handleCustomerCancelModal() {
     this.props.customerCancelModal()
+  }
+  handleChangeDate(event) {
+    console.log('Dateeee');
+    console.log(event);
+    this.props.changeDate(event.getTime())
   }
 
   render() {
@@ -74,6 +81,14 @@ class FormBookingComponent extends Component {
         onChange={this.handleChangeCustomerNationalId}
       />
     </div>
+
+    <div className="form-group">
+      <label htmlFor="date">Fecha</label>
+        <Calendar
+     onChange={this.handleChangeDate}
+     />
+
+    </div>
   </div>
   <div className="modal-footer">
     <button type="button" className="btn btn-secondary" onClick={this.handleCustomerCancelModal}>
@@ -112,7 +127,9 @@ const mapDispatchToProps = (dispatch) => {
         changeCustomerEmail: (customerEmail) => dispatch(changeCustomerEmail(customerEmail)),
         changeCustomerNationalId: (nationalId) => dispatch(changeCustomerNationalId(nationalId)),
         submitBooking: () => dispatch(submitBooking()),
-        customerCancelModal: () => dispatch(customerCancelModal())
+        customerCancelModal: () => dispatch(customerCancelModal()),
+        changeDate: (date) => dispatch(changeDate(date)),
+
     };
 };
 

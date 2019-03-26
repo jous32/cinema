@@ -1,3 +1,12 @@
+export function changeDate(state = [], action) {
+    switch (action.type) {
+        case 'CHANGE_DATE':
+            return action.changeDate;
+        default:
+            return state;
+    }
+}
+
 export function movieName(state = [], action) {
     switch (action.type) {
         case 'CHANGE_NAME':

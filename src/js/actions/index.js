@@ -130,6 +130,8 @@ function createBooking(movieFunction,personId,movieId){
   })
       .then((response) => {
           if (!response.ok) {
+            dispatch(changeCustomerCreateEditVisible(false));
+            dispatch(changeId(''));
               throw Error(response.statusText);
           }
           return response;
@@ -141,6 +143,7 @@ function createBooking(movieFunction,personId,movieId){
       .catch(function(err) {
 
           console.log(err.message);
+          dispatch(changeCustomerCreateEditVisible(false));
           dispatch(changeId(''));
           dispatch(itemsHasErrored(true))
         })

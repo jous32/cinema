@@ -309,12 +309,7 @@ export function itemUpdateListSuccess(itemUpdate){
     console.log('listItems')
     console.log(listItems)
     dispatch(itemsFetchDataSuccess(listItems));
-    /*
-    dispatch(changeId(''));
-    dispatch(changeName(''));
-    dispatch(changeDescription(''));
-    dispatch(createEditVisible(false));
-    */
+
   };
 }
 export function loadNewMovie() {
@@ -348,6 +343,18 @@ export function showBooking(id){
   return (dispatch, getState) => {
     dispatch(changeId(id));
     dispatch(changeCustomerCreateEditVisible(true));
+  }
+}
+
+export function customerCancelModal(){
+  return (dispatch, getState) => {
+
+    dispatch(changeCustomerCreateEditVisible(false));
+  }
+}
+export function cancelEditVisible(){
+  return (dispatch, getState) => {
+    dispatch(createEditVisible(false));
   }
 }
 

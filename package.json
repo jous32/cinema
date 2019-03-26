@@ -29,6 +29,7 @@
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
+    "react-bootstrap4-modal": "^1.7.0",
     "react-dropdown": "^1.4.0",
     "redux-thunk": "^2.1.0",
     "whatwg-fetch": "^2.0.3"

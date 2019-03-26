@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import Modal from 'react-bootstrap4-modal';
 import { connect } from "react-redux";
-import { changeCustomerName,changeCustomerEmail,changeCustomerNationalId,submitBooking } from '../actions/index';
+import { changeCustomerName,changeCustomerEmail,changeCustomerNationalId,submitBooking,customerCancelModal } from '../actions/index';
 
 class FormBookingComponent extends Component {
   constructor() {
@@ -10,6 +11,7 @@ class FormBookingComponent extends Component {
     this.handleChangeCustomerEmail = this.handleChangeCustomerEmail.bind(this);
     this.handleChangeCustomerNationalId = this.handleChangeCustomerNationalId.bind(this);
     this.handleSubmitBooking = this.handleSubmitBooking.bind(this);
+    this.handleCustomerCancelModal = this.handleCustomerCancelModal.bind(this);
   }
 
 
@@ -25,8 +27,9 @@ class FormBookingComponent extends Component {
   handleSubmitBooking(event) {
     this.props.submitBooking(event.target.value)
   }
-
-
+  handleCustomerCancelModal() {
+    this.props.customerCancelModal()
+  }
 
   render() {
     console.log('customerCreateEditVisible ')
@@ -36,43 +39,53 @@ class FormBookingComponent extends Component {
       return (
 
           <div>
-            <h2>Reservar</h2>
+  <Modal visible={this.props.customerCreateEditVisible} onClickBackdrop={this.handleCustomerCancelModal}>
+  <div className="modal-header">
+    <h5 className="modal-title">Reservar</h5>
+  </div>
+  <div className="modal-body">
+    <div className="form-group">
+      <label htmlFor="name">Nombre</label>
+      <input
+        type="text"
+        className="form-control"
+        id="name"
+        value={this.props.customerName}
+        onChange={this.handleChangeCustomerName}
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="email">Email</label>
+      <input
+        type="text"
+        className="form-control"
+        id="description"
+        value={this.props.customerEmail}
+        onChange={this.handleChangeCustomerEmail}
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="national_id">Cedula</label>
+      <input
+        type="text"
+        className="form-control"
+        id="image_url"
+        value={this.props.customerNationalId}
+        onChange={this.handleChangeCustomerNationalId}
+      />
+    </div>
+  </div>
+  <div className="modal-footer">
+    <button type="button" className="btn btn-secondary" onClick={this.handleCustomerCancelModal}>
+      Cancelar
+    </button>
+    <button type="button" className="btn btn-primary" onClick={this.handleSubmitBooking}>
+      Reservar
+    </button>
+  </div>
+</Modal>
 
-          <div className="form-group">
-            <label htmlFor="name">Nombre</label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              value={this.props.customerName}
-              onChange={this.handleChangeCustomerName}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              value={this.props.customerEmail}
-              onChange={this.handleChangeCustomerEmail}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="national_id">Cedula</label>
-            <input
-              type="text"
-              className="form-control"
-              id="image_url"
-              value={this.props.customerNationalId}
-              onChange={this.handleChangeCustomerNationalId}
-            />
-          </div>
 
-
-          <button className="btn btn-success btn-lg" onClick={this.handleSubmitBooking}>
-            Reservar
-          </button>
 
           </div>
       );
@@ -98,7 +111,8 @@ const mapDispatchToProps = (dispatch) => {
         changeCustomerName : (customerName) => dispatch(changeCustomerName(customerName)),
         changeCustomerEmail: (customerEmail) => dispatch(changeCustomerEmail(customerEmail)),
         changeCustomerNationalId: (nationalId) => dispatch(changeCustomerNationalId(nationalId)),
-        submitBooking: () => dispatch(submitBooking())
+        submitBooking: () => dispatch(submitBooking()),
+        customerCancelModal: () => dispatch(customerCancelModal())
     };
 };
 

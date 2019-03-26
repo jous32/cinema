@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import Modal from 'react-bootstrap4-modal';
 import { connect } from "react-redux";
-import { changeId,changeName,saveMovieRemote,changeDescription,changeImageUrl } from '../actions/index';
+import { changeId,changeName,saveMovieRemote,changeDescription,changeImageUrl,cancelEditVisible } from '../actions/index';
 import Dropdown from 'react-dropdown'
 
 class ConnectedForm extends Component {
@@ -12,6 +13,7 @@ class ConnectedForm extends Component {
     this.handleChangeDescription = this.handleChangeDescription.bind(this);
     this.handleChangeImageUrl = this.handleChangeImageUrl.bind(this);
     this.handleSubmitSave = this.handleSubmitSave.bind(this);
+    this.handleCancelEditVisible = this.handleCancelEditVisible.bind(this);
   }
 
   handleChangeId(event) {
@@ -32,6 +34,9 @@ class ConnectedForm extends Component {
     this.props.saveMovieRemote();
   }
 
+  handleCancelEditVisible(){
+    this.props.cancelEditVisible();
+  }
 
 
   render() {
@@ -42,53 +47,64 @@ class ConnectedForm extends Component {
       return (
 
           <div>
-            <h2>Crear/Editar Pelicula</h2>
-          <div className="form-group">
-            <label htmlFor="id">Id</label>
-            <input
-              type="text"
-              className="form-control"
-              id="movieId"
-              value={this.props.movieId}
-              onChange={this.handleChangeId}
-              disabled={true}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              value={this.props.movieName}
-              onChange={this.handleChangeName}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Descripcion</label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              value={this.props.movieDescription}
-              onChange={this.handleChangeDescription}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="image_url">Image url</label>
-            <input
-              type="text"
-              className="form-control"
-              id="image_url"
-              value={this.props.movieImageUrl}
-              onChange={this.handleChangeImageUrl}
-            />
-          </div>
 
 
-          <button className="btn btn-success btn-lg" onClick={this.handleSubmitSave}>
-            Save
-          </button>
+            <Modal visible={this.props.createEditVisible} onClickBackdrop={this.handleCancelEditVisible}>
+  <div className="modal-header">
+    <h5 className="modal-title">Crear/Editar Pelicula</h5>
+  </div>
+  <div className="modal-body">
+    <div className="form-group">
+      <label htmlFor="id">Id</label>
+      <input
+        type="text"
+        className="form-control"
+        id="movieId"
+        value={this.props.movieId}
+        onChange={this.handleChangeId}
+        disabled={true}
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="name">Name</label>
+      <input
+        type="text"
+        className="form-control"
+        id="name"
+        value={this.props.movieName}
+        onChange={this.handleChangeName}
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="description">Descripcion</label>
+      <input
+        type="text"
+        className="form-control"
+        id="description"
+        value={this.props.movieDescription}
+        onChange={this.handleChangeDescription}
+      />
+    </div>
+    <div className="form-group">
+      <label htmlFor="image_url">Image url</label>
+      <input
+        type="text"
+        className="form-control"
+        id="image_url"
+        value={this.props.movieImageUrl}
+        onChange={this.handleChangeImageUrl}
+      />
+    </div>
+  </div>
+  <div className="modal-footer">
+    <button type="button" className="btn btn-secondary" onClick={this.handleCancelEditVisible}>
+      Cancelar
+    </button>
+    <button type="button" className="btn btn-primary" onClick={this.handleSubmitSave}>
+      Guardar
+    </button>
+  </div>
+</Modal>
 
           </div>
       );
@@ -116,7 +132,8 @@ const mapDispatchToProps = (dispatch) => {
         changeName: (movieName) => dispatch(changeName(movieName)),
         saveMovieRemote: () => dispatch(saveMovieRemote()),
         changeDescription: (movieDescription) => dispatch(changeDescription(movieDescription)),
-        changeImageUrl: (movieImageUrl) => dispatch(changeImageUrl(movieImageUrl))
+        changeImageUrl: (movieImageUrl) => dispatch(changeImageUrl(movieImageUrl)),
+        cancelEditVisible: () => dispatch(cancelEditVisible())
 
     };
 };

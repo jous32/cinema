@@ -44,7 +44,7 @@ class ItemListMovies extends Component {
 
         return (
           <div>
-          
+
           <button className="btn btn-success btn-sm" onClick={() => this.loadNewMovie()} >
             Nuevo
           </button>
@@ -52,7 +52,7 @@ class ItemListMovies extends Component {
           {this.props.items.map((item) => (
              <div key={item.id} className="col-md-4">
 
-                <img src={item.image_url} alt={item.name} height={200} width={200} />
+                <img src={item.image_url} alt={item.name} height={200} width={200} text={item.description} />
                    Descripcion : {item.description}
                   <button values={item.id} className="btn btn-success btn-sm" onClick={() => this.loadMovieById(item.id)} >
                     Editar

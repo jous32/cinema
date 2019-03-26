@@ -32,58 +32,121 @@ export function changeCustomerCreateEditVisible(value) {
 
 export function submitBooking() {
     return (dispatch, getState) => {
-      console.log("asdasdads asdass ")
-      const { user } = getState();
-      console.log('statee')
-      console.log(getState())
-      console.log(getState().movieName)
-      var http_method = 'post' ;
-      var payload = {"name": getState().movieName,	"description" : getState().movieDescription}
-      var id = getState().movieId
-      if(id != null && id != ''){
-        http_method = 'PUT'
-        payload = {"id": id ,"name": getState().movieName,	"description" : getState().movieDescription, "image_url": getState().movieImageUrl}
+      var bookingInfo = {
+        "name": getState().customerName,
+        "email" : getState().customerEmail,
+        "national_id": getState().customerNationalId,
+        "movieId" : getState().movieId,
+        "date" : '2019-01-01'
       }
-      console.log(http_method)
-      console.log(payload)
+      dispatch(createPerson(bookingInfo));
 
 
     };
 }
 
-function createPerson(person){
-  var payload = {"name": getState().customerName,	"email" : getState().customerEmail, "national_id": getState().customerNationalId}
-  fetch('http://localhost:3000/people',
+function createPerson(bookingInfo){
+  return (dispatch, getState) => {
+    var payload = {"name": bookingInfo.name,	"email" : bookingInfo.email, "national_id": bookingInfo.national_id}
+    var movieId = bookingInfo.movieId;
+    var date = bookingInfo.date;
+    //var payload = {"name": person.name,	"email" : person.email, "national_id": person.national_id}
+    fetch('http://localhost:3000/people',
+    {
+      headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(payload)
+    })
+        .then((response) => {
+            if (!response.ok) {
+              dispatch(changeCustomerCreateEditVisible(false));
+              dispatch(changeId(''));
+                throw Error(response.statusText);
+            }
+            return response;
+        })
+        .then((response) => response.json())
+        .then((person) => dispatch(obtainFuction(date,movieId,person)))
+        //.then((itemUpdate) => dispatch(itemUpdateListSuccess(itemUpdate)))
+        //.then((items) => dispatch(itemsFetchDataSuccess(items)))
+        .catch(function(err) {
+            console.log(err.message);
+            dispatch(changeCustomerCreateEditVisible(false));
+            dispatch(changeId(''));
+            dispatch(itemsHasErrored(true))
+          })
+      };
+}
+
+function obtainFuction(date,movieId,person){
+  return (dispatch, getState) => {
+
+    fetch('http://localhost:3000/functions?date_filter='+date+ '&movie_id='+movieId,
+    {
+      headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        },
+        method: 'GET',
+    })
+        .then((response) => {
+            if (!response.ok) {
+              dispatch(changeCustomerCreateEditVisible(false));
+              dispatch(changeId(''));
+                throw Error(response.statusText);
+            }
+            return response;
+        })
+        .then((response) => response.json())
+        .then((movieFunction) => dispatch(createBooking(movieFunction,movieId,person.id)))
+        //.then((itemUpdate) => dispatch(itemUpdateListSuccess(itemUpdate)))
+        //.then((items) => dispatch(itemsFetchDataSuccess(items)))
+        .catch(function(err) {
+            console.log(err.message);
+            dispatch(changeCustomerCreateEditVisible(false));
+            dispatch(changeId(''));
+            dispatch(itemsHasErrored(true))
+          })
+    };
+
+
+}
+
+function createBooking(movieFunction,personId,movieId){
+  return (dispatch, getState) => {
+
+  var payload = {"person_id": personId,	"function_id" : movieFunction[0].id}
+  fetch('http://localhost:3000/bookings',
   {
     headers: {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
       },
-      method: 'POST',
+      method: 'GET',
       body: JSON.stringify(payload)
   })
       .then((response) => {
           if (!response.ok) {
               throw Error(response.statusText);
           }
-          
-
           return response;
       })
       .then((response) => response.json())
+      //.then((movieFunction) => dispatch(createBooking(movieFunction,movieId,person.id)))
       //.then((itemUpdate) => dispatch(itemUpdateListSuccess(itemUpdate)))
       //.then((items) => dispatch(itemsFetchDataSuccess(items)))
       .catch(function(err) {
+
           console.log(err.message);
+          dispatch(changeId(''));
           dispatch(itemsHasErrored(true))
         })
-        dispatch(createEditVisible(false));
-        dispatch(changeId(''));
-        dispatch(changeName(''));
-        dispatch(changeDescription(''));
-        dispatch(changeImageUrl(''));
-        dispatch(itemsFetchData());
-  return
+  };
+
+
 }
 
 export function changeId(id) {
@@ -178,7 +241,7 @@ export function itemsFetchData() {
 export function saveMovieRemote() {
     return (dispatch, getState) => {
 
-      const { user } = getState();
+
       console.log('statee')
       console.log(getState())
       console.log(getState().movieName)
@@ -280,7 +343,7 @@ export function loadMovieById(id) {
 }
 export function showBooking(id){
   return (dispatch, getState) => {
-    console.log('yeahh ...jous32 continue here' + id )
+    dispatch(changeId(id));
     dispatch(changeCustomerCreateEditVisible(true));
   }
 }
